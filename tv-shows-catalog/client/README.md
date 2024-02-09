@@ -10,7 +10,7 @@ Application cliente (SPA) affichant un catalogue de séries TV.
 ## Prérequis
 
 - Node.js LTS ;
-- (Production uniquement) Un serveur Web (Nginx recommandé, Apache possible).
+- (Optionnel, bonus) (Recommandé en production) Un serveur Web (Nginx recommandé, Apache possible).
 
 ## Variables d'environnement
 
