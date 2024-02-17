@@ -8,6 +8,7 @@ COPY . .
 ENV COMPOSER_ALLOW_SUPERUSER=1
 
 RUN apt update
+RUN apt install zip -y
 RUN apt install -y libicu-dev git
 RUN docker-php-ext-configure intl
 RUN docker-php-ext-install intl
