@@ -8,7 +8,6 @@ COPY . .
 ENV COMPOSER_ALLOW_SUPERUSER=1
 
 RUN apt update
-RUN apt install zip -y
 RUN apt install -y libicu-dev git
 RUN docker-php-ext-configure intl
 RUN docker-php-ext-install intl
@@ -17,7 +16,8 @@ RUN php -r "if (hash_file('sha384', 'composer-setup.php') === 'edb40769019ccf227
 RUN php composer-setup.php
 RUN php -r "unlink('composer-setup.php');"
 RUN mv composer.phar /usr/local/bin/composer
+RUN apt install zip -y
+RUN composer install --optimize-autoloader
 RUN php bin/console asset-map:compile
 RUN php bin/console cache:clear --env=prod
-RUN composer install --no-dev --optimize-autoloader
 RUN chmod -R 777 ./**/*
