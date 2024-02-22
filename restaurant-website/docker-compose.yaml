@@ -6,12 +6,12 @@ services:
     networks:
       - mynetwork
   nginx:
-    image: nginx:latest
+    image: nginx:1.25.4-alpine-slim
     volumes:
       - ./.docker/nginx/:/etc/nginx/conf.d/
       - .:/var/www/html
     ports:
-      - "80:80"
+      - "${PORT}:${PORT}"
     networks:
       - mynetwork
 
