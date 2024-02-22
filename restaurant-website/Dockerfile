@@ -1,23 +1,17 @@
-# Stage 1: Build Stage
-FROM php:8.3-fpm
+FROM php:8.3-fpm-alpine
 
 WORKDIR /var/www/html
 
-COPY . .
+RUN apk add icu-dev git && \
+	docker-php-ext-configure intl && \
+	docker-php-ext-install intl
 
-ENV COMPOSER_ALLOW_SUPERUSER=1
+COPY --chown=www-data:www-data . .
 
-RUN apt update
-RUN apt install -y libicu-dev git
-RUN docker-php-ext-configure intl
-RUN docker-php-ext-install intl
-RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
-RUN php -r "if (hash_file('sha384', 'composer-setup.php') === 'edb40769019ccf227279e3bdd1f5b2e9950eb000c3233ee85148944e555d97be3ea4f40c3c2fe73b22f875385f6a5155') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;"
-RUN php composer-setup.php
-RUN php -r "unlink('composer-setup.php');"
-RUN mv composer.phar /usr/local/bin/composer
-RUN apt install zip -y
+
+COPY --from=composer:lts /usr/bin/composer /usr/bin/composer
+USER www-data
 RUN composer install --optimize-autoloader
-RUN php bin/console asset-map:compile
-RUN php bin/console cache:clear --env=prod
-RUN chmod -R 777 ./**/*
+
+RUN php bin/console asset-map:compile && \
+	php bin/console cache:clear --env=prod
