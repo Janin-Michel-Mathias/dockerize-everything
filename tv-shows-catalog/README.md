@@ -1,5 +1,29 @@
 # *Dockerize Everything!* - Application : Make Me Watch
 
+## Démarrez l'application
+
+Pour démarrer l'application, exécutez la commande suivante à la racine du projet :
+Avec les flags suivants:
+
+server
+
+client-dev / client-preprod / client
+
+Pour passer le server en "development", il faut le remplacer directement dans le fichier docker-compose.yaml
+
+
+Exemple :
+
+```bash
+docker-compose up -d server client-preprod
+```
+```bash
+docker-compose up -d server client-dev
+```
+```bash
+docker-compose up -d server client
+```
+
 ## Objectif
 
 Conteneuriser l'application Make Me Watch pour qu'elle s'exécute en mode production à l'aide de Docker.

@@ -1,7 +1,34 @@
 services:
+  # Choisir entre "development" ou "production" dans targer
   server:
-    build: ./server
+    build:
+      context: ./server
+      target: development
+      dockerfile: Dockerfile
+
+  # Client par défaut la production
   client:
-    build: ./client
+    build:
+      context: ./client
+      target: production
+      dockerfile: Dockerfile
     ports:
-      - "80:3000"
+      - "${PORT}:3000"
+
+  # Developpement
+  client-dev:
+    build:
+      context: ./client
+      target: development
+      dockerfile: Dockerfile
+    ports:
+      - "${PORT}:5173"
+
+    # Preprod
+  client-preprod:
+    build:
+      context: ./client
+      target: preview
+      dockerfile: Dockerfile
+    ports:
+      - "${PORT}:4173"

@@ -1,12 +1,21 @@
-FROM node:lts
+FROM node:lts-alpine AS default
 
-EXPOSE 3000/tcp
+EXPOSE ${PORT}
 
 WORKDIR /app
 
-COPY . .
+COPY package*.json ./
 
 RUN npm install
+
+COPY . .
+
+#DEV
+FROM default AS development
+CMD npm run start:dev
+
+#PROD
+FROM default AS production
 
 RUN npm run build
 
